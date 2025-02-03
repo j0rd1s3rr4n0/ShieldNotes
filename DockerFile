@@ -1,0 +1,49 @@
+FROM ubuntu:latest
+
+# Configuración de idioma
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
+# Actualización e instalación de paquetes necesarios
+RUN apt update -y && apt upgrade -y
+RUN apt install -y \
+    php apache2 ssh mariadb-server mariadb-client \
+    php-mysql php-sqlite3 php-xml php-mbstring php-curl php-zip php-gd \
+    php-imagick php-xmlrpc php-soap php-intl php-bcmath php-ldap php-imap \
+    php-tidy php-pear php-dev php-redis php-ssh2 \
+    locales
+
+# Eliminamos el archivo predeterminado de Apache
+RUN rm -rf /var/www/html/index.html
+
+# Copiamos los archivos del proyecto
+COPY ./ShieldNotes/ /var/www/ShieldNotes/
+
+# Ajustes de permisos
+RUN chown -R www-data:www-data /var/www/
+RUN chmod -R 755 /var/www/
+RUN mv /var/www/ShieldNotes/* /var/www/html/
+RUN mv /var/www/ShieldNotes/.htaccess /var/www/html/
+
+# Configuramos locales
+RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales
+
+# Configuramos SSH para permitir login como root con contraseña
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+
+# Establecemos la contraseña para el usuario root
+RUN echo 'root:Admin1234' | chpasswd
+
+# Habilitamos mod_rewrite para Apache
+RUN a2enmod rewrite
+
+# Iniciamos Apache y SSH
+RUN service apache2 start && service ssh start
+
+# Comando para iniciar los servicios al correr el contenedor
+CMD echo "Created by J0rd1s3rr4n0 -> https://github.com/j0rd1s3rr4n0/" && \
+    service apache2 start & service ssh start & tail -f /dev/null
+
+# Exponemos puertos
+EXPOSE 80 3022

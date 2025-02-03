@@ -1,0 +1,17 @@
+RewriteEngine On
+RewriteBase /
+
+# Redirige /crear a index.php?crear
+RewriteRule ^crear.html$ index.php?crear [L,QSA]
+
+# Redirige /show a index.php?show
+RewriteRule ^show.html$ index.php?show [L,QSA]
+
+# Redirige /home a index.php?home
+RewriteRule ^home.html$ index.php?home [L,QSA]
+
+# Habilitar reescritura para que funcione correctamente en Apache
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+</IfModule>
