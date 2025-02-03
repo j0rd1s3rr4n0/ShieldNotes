@@ -2,13 +2,10 @@
 
 
 ### Build Image
+
+#### From `DockerFile`
 ```bash
 docker build --pull --rm -f DockerFile -t shieldnotes:latest .
-```
-
-#### From `.tar`
-```bash
-docker load < shieldnotes.tar
 ```
 
 #### From `.tar`
