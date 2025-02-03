@@ -13,8 +13,6 @@ docker build --pull --rm -f DockerFile -t shieldnotes:latest .
 docker load < shieldnotes.tar
 ```
 
-
-
 ### Use
 
 ```bash
