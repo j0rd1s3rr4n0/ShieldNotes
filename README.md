@@ -1,5 +1,5 @@
 # ShieldNotes
-
+Create, share and view one-time notes encrypted with the RSA algorithm. An easy, fast and secure way to share credentials, secret messages and even files.
 
 ### Build Image
 
